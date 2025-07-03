@@ -1,3 +1,4 @@
+sudo yum -y install java-17-amazon-corretto-devel
 cd src
 mkdir -p WEB-INF/classes
 echo .
