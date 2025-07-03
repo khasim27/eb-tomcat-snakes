@@ -1,0 +1,29 @@
+version: "2.0"
+jobs:
+  build:
+    image: openjdk:17
+    working_dir: src
+    steps:
+      - name: Create Classes Directory
+        run: mkdir -p WEB-INF/classes
+      - name: Compile Media.java
+        run: javac -d WEB-INF/classes com/snakes/model/Media.java
+      - name: Compile Movie.java
+        run: javac -classpath WEB-INF/lib/*:WEB-INF/classes -d WEB-INF/classes com/snakes/model/Movie.java
+      - name: Compile ListMovies.java
+        run: javac -classpath WEB-INF/lib/*:WEB-INF/classes -d WEB-INF/classes com/snakes/web/ListMovies.java
+      - name: Compile AddMovie.java
+        run: javac -classpath WEB-INF/lib/*:WEB-INF/classes -d WEB-INF/classes com/snakes/web/AddMovie.java
+      - name: Compile SearchMovies.java
+        run: javac -classpath WEB-INF/lib/*:WEB-INF/classes -d WEB-INF/classes com/snakes/web/SearchMovies.java
+      - name: Create WAR File
+        run: |
+          if [ -d ".ebextensions/httpd/conf.d" ]; then
+            jar -cf ROOT.war *.jsp images css js WEB-INF .ebextensions/*.config .ebextensions/*.json .ebextensions/httpd/conf.d/*.conf
+          else
+            jar -cf ROOT.war *.jsp images css js WEB-INF .ebextensions/*.config .ebextensions/*.json
+          fi
+      - name: Move WAR File
+        run: mv ROOT.war ../
+      - name: Build Success
+        run: echo "SUCCESS"
