@@ -1,8 +1,7 @@
 version: 0.2
-
 phases:
-  install:
+  install: null
   build:
     commands:
-    - ls
-    - ./deploy.sh
+      - ls
+      - ./deploy.sh
